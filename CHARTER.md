@@ -1,4 +1,4 @@
-# ada-stb — charter
+# stb-ada — charter
 
 Ada bindings to the [STB header-only utility collection](https://github.com/nothings/stb)
 by Sean Barrett.
@@ -52,12 +52,12 @@ Ada I/O), stb_textedit (overlaps any GUI library's own).
 ## Repository layout
 
 ```
-ada-stb/
+stb-ada/
 ├── CHARTER.md           — this
 ├── README.md            — public one-pager
 ├── LICENSE              — MIT (matches STB's MIT half)
 ├── alire.toml           — crate metadata
-├── ada_stb.gpr          — root GPR (static library)
+├── stb_ada.gpr          — root GPR (static library)
 ├── src/
 │   ├── stb.ads          — root package, version, common types
 │   ├── stb-image.ads/adb       — first child: image loading

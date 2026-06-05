@@ -1,13 +1,13 @@
---  Root GPR for the ada-stb bindings.
+--  Root GPR for the stb-ada bindings.
 --
---  Builds the Ada side into a static library (lib/libada_stb.a)
+--  Builds the Ada side into a static library (lib/libstb_ada.a)
 --  and propagates the linker flags needed to pull in libstb.a
 --  (built separately by scripts/build-stb.sh) plus the macOS
 --  Xcode SDK path.
 
-library project Ada_Stb is
+library project Stb_Ada is
 
-   for Library_Name use "ada_stb";
+   for Library_Name use "stb_ada";
    for Library_Kind use "static";
    for Source_Dirs use ("src");
    for Object_Dir use "obj";
@@ -35,4 +35,4 @@ library project Ada_Stb is
          "-g");
    end Compiler;
 
-end Ada_Stb;
+end Stb_Ada;

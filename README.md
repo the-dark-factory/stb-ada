@@ -1,4 +1,4 @@
-# ada-stb
+# stb-ada
 
 Ada bindings to [STB](https://github.com/nothings/stb) — Sean
 Barrett's collection of public-domain header-only C utilities.

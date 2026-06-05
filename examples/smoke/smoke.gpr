@@ -1,10 +1,10 @@
---  Smoke test for ada-stb.
+--  Smoke test for stb-ada.
 --
---  Builds against the in-tree ada_stb library + the libstb.a
+--  Builds against the in-tree stb_ada library + the libstb.a
 --  produced by scripts/build-stb.sh. The linker flags propagate
---  from ada_stb.gpr's Linker_Options; nothing extra needed here.
+--  from stb_ada.gpr's Linker_Options; nothing extra needed here.
 
-with "../../ada_stb.gpr";
+with "../../stb_ada.gpr";
 
 project Smoke is
 
