@@ -13,3 +13,5 @@ config/
 *.exe
 csrc/stb_impl.o
 vendor/stb/libstb.a
+# Reference fdump-ada-spec output from scripts/gen.sh (generation aid, not source).
+gen/
