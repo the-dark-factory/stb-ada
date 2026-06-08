@@ -5,7 +5,7 @@
 --  (built separately by scripts/build-stb.sh) plus the macOS
 --  Xcode SDK path.
 
-library project Stb_Ada is
+library project Df_Stb is
 
    for Library_Name use "stb_ada";
    for Library_Kind use "static";
@@ -35,4 +35,4 @@ library project Stb_Ada is
          "-g");
    end Compiler;
 
-end Stb_Ada;
+end Df_Stb;

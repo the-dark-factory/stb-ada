@@ -1,4 +1,4 @@
-name = "stb_ada"
+name = "df_stb"
 description = "Ada bindings to Sean Barrett's STB header-only utility libraries"
 version = "0.1.0"
 authors = ["The Dark Factory Ltd"]
@@ -7,7 +7,7 @@ maintainers-logins = ["tonygair"]
 licenses = "MIT"
 website = "https://github.com/the-dark-factory/stb-ada"
 tags = ["binding", "image", "stb", "stb-image", "stb-truetype"]
-project-files = ["stb_ada.gpr"]
+project-files = ["df_stb.gpr"]
 auto-gpr-with = false
 
 [build-switches]
