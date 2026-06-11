@@ -1,38 +1,43 @@
---  Root GPR for the stb-ada bindings.
+--  Root GPR for the df_stb bindings — standard Alire library project
+--  (the shape `alr init --lib` generates), extended for the C side.
 --
---  Builds the Ada side into a static library (lib/libstb_ada.a)
---  and propagates the linker flags needed to pull in libstb.a
---  (built separately by scripts/build-stb.sh) plus the macOS
---  Xcode SDK path.
-
-library project Df_Stb is
+--  STB is header-only C: the single implementation unit csrc/stb_impl.c
+--  triggers the STB_*_IMPLEMENTATION bodies. We compile that C HERE, via
+--  gprbuild, so `alr build` is fully self-contained — no pre-build script,
+--  no separately-built libstb.a, and nothing platform-hardcoded.
+with "config/df_stb_config.gpr";
+project Df_Stb is
 
    for Library_Name use "stb_ada";
-   for Library_Kind use "static";
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
+   for Library_Version use Project'Library_Name & ".so." & Df_Stb_Config.Crate_Version;
+
+   --  Ada bindings (src/) + the one C implementation unit (csrc/).
+   for Languages use ("Ada", "C");
+   for Source_Dirs use ("src/", "csrc/", "config/");
+   for Object_Dir use "obj/" & Df_Stb_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
    for Library_Dir use "lib";
 
-   --  Propagates to anyone with-ing this project.
-   --
-   --  -syslibroot is needed on macOS because the Alire-shipped
-   --  gcc doesn't know about Xcode's SDK lib path. Linux's cc
-   --  finds the libc family automatically; that branch lights
-   --  up once we test on Linux.
-   package Linker is
-      for Linker_Options use
-        ("-L" & Project'Project_Dir & "vendor/stb",
-         "-lstb",
-         "-Wl,-syslibroot,/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk");
-   end Linker;
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("DF_STB_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
 
    package Compiler is
-      for Default_Switches ("ada") use
-        ("-gnatwa",
-         "-gnaty",
-         "-gnatVa",
-         "-O0",
-         "-g");
+      for Default_Switches ("Ada") use Df_Stb_Config.Ada_Compiler_Switches;
+      --  Point the C compiler at the vendored STB headers so the single
+      --  implementation unit resolves its includes. No SDK/sysroot is
+      --  hardcoded: on macOS, set SDKROOT (e.g. `export SDKROOT=$(xcrun
+      --  --show-sdk-path)`) if the toolchain needs it; Linux/CI need nothing.
+      for Switches ("C") use ("-O2", "-I" & Project'Project_Dir & "vendor/stb");
    end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
 
 end Df_Stb;

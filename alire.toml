@@ -9,14 +9,10 @@ website = "https://github.com/the-dark-factory/stb-ada"
 tags = ["binding", "image", "stb", "stb-image", "stb-truetype"]
 project-files = ["df_stb.gpr"]
 auto-gpr-with = false
-notes = "STB is header-only C; the post-fetch action builds vendor/stb/libstb.a from csrc/stb_impl.c (plain cc, no extra tooling)."
+notes = "STB is header-only C; the single implementation unit csrc/stb_impl.c is compiled by gprbuild as part of `alr build` (the project's Languages include C). No pre-build step. macOS: set SDKROOT if the toolchain needs the SDK headers."
 
 [build-switches]
 "*".style_checks = ["-gnaty"]
-
-[[actions]]
-type = "post-fetch"
-command = ["bash", "scripts/build-stb.sh"]
 
 [available.'case(os)']
 macos = true

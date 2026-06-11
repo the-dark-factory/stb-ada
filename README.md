@@ -37,12 +37,24 @@ plus its system-header spillover — useful to crib new bindings from, but **not
 a drop-in for `src/`. `gen.sh` therefore never writes to `src/`; the
 hand-authored binding is the canonical source and is preserved verbatim.
 
-Toolchain note (macOS): the STB headers `#include <stdio.h>`, which the
-Alire-shipped `gcc` cannot `fdump` against the current macOS SDK (`'FILE' does
-not name a type`). `gen.sh` uses Homebrew `gcc-15` for the dump (override with
-`GEN_GCC=`); the Ada itself still builds with the Alire toolchain. The Ada
-binding (`alr build`) is unaffected by any of this — the C library is built by
-`scripts/build-stb.sh` and the Ada compiled by Alire's GNAT as usual.
+Building: `alr build` is self-contained — the single STB implementation unit
+(`csrc/stb_impl.c`) is compiled by gprbuild alongside the Ada and archived into
+the library, so there is no pre-build step. On macOS the Alire-shipped `gcc`
+needs to be pointed at the SDK headers; if `alr build` reports a missing
+`_stdio.h`, set `SDKROOT` (and, for the C include search, `CPATH`):
+
+```sh
+export SDKROOT="$(xcrun --show-sdk-path)"
+export CPATH="$SDKROOT/usr/include"
+```
+
+Linux and the Alire index CI need none of this.
+
+Toolchain note (macOS, code generation only): the STB headers `#include
+<stdio.h>`, which the Alire-shipped `gcc` cannot `fdump` against the current
+macOS SDK (`'FILE' does not name a type`). `gen.sh` uses Homebrew `gcc-15` for
+the dump (override with `GEN_GCC=`); this affects only regenerating the binding,
+not `alr build`.
 
 ## License
 

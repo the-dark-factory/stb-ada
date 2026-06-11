@@ -19,10 +19,13 @@
 --  (csrc/stb_impl.c) that triggers the `STB_*_IMPLEMENTATION`
 --  defines for every header we ship bindings for.
 
+with Df_Stb_Config;
+
 package Stb is
 
-   --  Version of this binding crate (NOT the STB header version,
-   --  which is per-header and exposed by each child).
-   Crate_Version : constant String := "0.1.0-dev";
+   --  Version of this binding crate (NOT the STB header version, which is
+   --  per-header and exposed by each child). Sourced from Alire's generated
+   --  crate config so it never drifts from alire.toml.
+   Crate_Version : constant String := Df_Stb_Config.Crate_Version;
 
 end Stb;
